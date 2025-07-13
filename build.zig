@@ -3145,8 +3145,8 @@ pub fn build(b: *std.Build) void {
                 nasm_run.addArgs(&.{ "-f", "elf64", "-g", "-F", "dwarf" });
 
                 // nasm requires a trailing slash on include directories
-                nasm_run.addDecoratedDirectoryArg("-I", b.path("."), "/");
-                nasm_run.addDecoratedDirectoryArg("-I", b.path(std.fs.path.dirname(input_file).?), "/");
+                nasm_run.addArgs(&[_][]const u8{ "-I", b.fmt("{s}/", .{b.path(".").getPath(b)}) });
+                nasm_run.addArgs(&[_][]const u8{ "-I", b.fmt("{s}/", .{b.path(std.fs.path.dirname(input_file).?).getPath(b)}) });
 
                 nasm_run.addArgs(&.{"--include"});
                 nasm_run.addFileArg(config_asm.getOutput());
